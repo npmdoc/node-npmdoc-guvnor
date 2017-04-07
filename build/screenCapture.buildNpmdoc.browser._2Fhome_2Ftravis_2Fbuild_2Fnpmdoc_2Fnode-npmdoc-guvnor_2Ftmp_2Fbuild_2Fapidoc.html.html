@@ -1,0 +1,244 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/tableflip/guvnor">guvnor (v3.5.17)</a>
+</h1>
+<h4>A node process manager that isn't spanners all the way down</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.guvnor">module guvnor</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.guvnor.Remote">
+            function <span class="apidocSignatureSpan">guvnor.</span>Remote
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">guvnor.</span>Local</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.guvnor.Local">module guvnor.Local</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.guvnor.Local.connect">
+            function <span class="apidocSignatureSpan">guvnor.Local.</span>connect
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.guvnor.Local.connectOrStart">
+            function <span class="apidocSignatureSpan">guvnor.Local.</span>connectOrStart
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.guvnor.Local.running">
+            function <span class="apidocSignatureSpan">guvnor.Local.</span>running
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.guvnor" id="apidoc.module.guvnor">module guvnor</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.guvnor.Remote" id="apidoc.element.guvnor.Remote">
+        function <span class="apidocSignatureSpan">guvnor.</span>Remote
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">Remote = function () {
+  var args = Array.prototype.slice.apply(arguments)
+
+  createContainer(function (container) {
+    var callback = args[args.length - 1]
+
+    container._logger = findLogger.apply(null, args)
+
+    container.register('logger', findLogger.apply(null, args))
+
+    var remoteOptions = findRemoteOptions.apply(null, args)
+
+    if (!remoteOptions) {
+      return callback(new Error('Please pass an options object with your connection info'))
+    }
+
+    var host = remoteOptions.host
+    var port = remoteOptions.port
+    var secret = remoteOptions.secret
+    var principal = remoteOptions.user || 'root'
+    var timeout = remoteOptions.timeout || 10000
+    var rpcTimeout = remoteOptions.rpcTimeout === undefined ? 30000 : remoteOptions.rpcTimeout
+
+    container.create(require('./RemoteDaemon'), [host, port, principal, secret, timeout, rpcTimeout, callback], function (error,
+remoteDaemon) {
+      if (error) {
+        callback(error)
+      }
+
+      remoteDaemon.connect(callback)
+    })
+  })
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.guvnor.Local" id="apidoc.module.guvnor.Local">module guvnor.Local</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.guvnor.Local.connect" id="apidoc.element.guvnor.Local.connect">
+        function <span class="apidocSignatureSpan">guvnor.Local.</span>connect
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">connect = function () {
+  var args = Array.prototype.slice.call(arguments)
+
+  createContainer(function (container) {
+    findConfigAndLogger.call(null, container, args)
+
+    container.find('localDaemon').connect(args[args.length - 1])
+  })
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.guvnor.Local.connectOrStart" id="apidoc.element.guvnor.Local.connectOrStart">
+        function <span class="apidocSignatureSpan">guvnor.Local.</span>connectOrStart
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">connectOrStart = function () {
+  var args = Array.prototype.slice.call(arguments)
+
+  createContainer(function (container) {
+    findConfigAndLogger.call(null, container, args)
+
+    container.find('localDaemon').connectOrStart(args[args.length - 1])
+  })
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.guvnor.Local.running" id="apidoc.element.guvnor.Local.running">
+        function <span class="apidocSignatureSpan">guvnor.Local.</span>running
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">running = function () {
+  var args = Array.prototype.slice.call(arguments)
+
+  createContainer(function (container) {
+    findConfigAndLogger.call(null, container, args)
+
+    var callback = args[args.length - 1]
+
+    var connection = container.find('localDaemonUserConnection')
+    connection.connect({}, function (error) {
+      if (error &amp;&amp; error.code === 'DAEMON_NOT_RUNNING') {
+        return process.nextTick(callback.bind(callback, false))
+      }
+
+      process.nextTick(callback.bind(callback, true))
+
+      connection.disconnect()
+    })
+  })
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
