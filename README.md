@@ -1,9 +1,14 @@
-# api documentation for  [guvnor (v3.5.17)](https://github.com/tableflip/guvnor)  [![npm package](https://img.shields.io/npm/v/npmdoc-guvnor.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-guvnor) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-guvnor.svg)](https://travis-ci.org/npmdoc/node-npmdoc-guvnor)
+# npmdoc-guvnor
+
+#### api documentation for  [guvnor (v3.5.17)](https://github.com/tableflip/guvnor)  [![npm package](https://img.shields.io/npm/v/npmdoc-guvnor.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-guvnor) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-guvnor.svg)](https://travis-ci.org/npmdoc/node-npmdoc-guvnor)
+
 #### A node process manager that isn't spanners all the way down
 
-[![NPM](https://nodei.co/npm/guvnor.png?downloads=true)](https://www.npmjs.com/package/guvnor)
+[![NPM](https://nodei.co/npm/guvnor.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/guvnor)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-guvnor/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-guvnor_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-guvnor/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-guvnor/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-guvnor/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-guvnor/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-guvnor/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-guvnor/build/screenCapture.npmPackageListing.svg)
 
@@ -165,8 +170,7 @@
     "license": "MIT",
     "maintainers": [
         {
-            "name": "achingbrain",
-            "email": "alex@achingbrain.net"
+            "name": "achingbrain"
         }
     ],
     "name": "guvnor",
@@ -179,7 +183,6 @@
         "test"
     ],
     "prefer-global": true,
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/tableflip/guvnor.git"
@@ -202,134 +205,6 @@
     },
     "version": "3.5.17"
 }
-```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module guvnor](#apidoc.module.guvnor)
-1.  [function <span class="apidocSignatureSpan">guvnor.</span>Remote ()](#apidoc.element.guvnor.Remote)
-1.  object <span class="apidocSignatureSpan">guvnor.</span>Local
-
-#### [module guvnor.Local](#apidoc.module.guvnor.Local)
-1.  [function <span class="apidocSignatureSpan">guvnor.Local.</span>connect ()](#apidoc.element.guvnor.Local.connect)
-1.  [function <span class="apidocSignatureSpan">guvnor.Local.</span>connectOrStart ()](#apidoc.element.guvnor.Local.connectOrStart)
-1.  [function <span class="apidocSignatureSpan">guvnor.Local.</span>running ()](#apidoc.element.guvnor.Local.running)
-
-
-
-# <a name="apidoc.module.guvnor"></a>[module guvnor](#apidoc.module.guvnor)
-
-#### <a name="apidoc.element.guvnor.Remote"></a>[function <span class="apidocSignatureSpan">guvnor.</span>Remote ()](#apidoc.element.guvnor.Remote)
-- description and source-code
-```javascript
-Remote = function () {
-  var args = Array.prototype.slice.apply(arguments)
-
-  createContainer(function (container) {
-    var callback = args[args.length - 1]
-
-    container._logger = findLogger.apply(null, args)
-
-    container.register('logger', findLogger.apply(null, args))
-
-    var remoteOptions = findRemoteOptions.apply(null, args)
-
-    if (!remoteOptions) {
-      return callback(new Error('Please pass an options object with your connection info'))
-    }
-
-    var host = remoteOptions.host
-    var port = remoteOptions.port
-    var secret = remoteOptions.secret
-    var principal = remoteOptions.user || 'root'
-    var timeout = remoteOptions.timeout || 10000
-    var rpcTimeout = remoteOptions.rpcTimeout === undefined ? 30000 : remoteOptions.rpcTimeout
-
-    container.create(require('./RemoteDaemon'), [host, port, principal, secret, timeout, rpcTimeout, callback], function (error,
-remoteDaemon) {
-      if (error) {
-        callback(error)
-      }
-
-      remoteDaemon.connect(callback)
-    })
-  })
-}
-```
-- example usage
-```shell
-n/a
-```
-
-
-
-# <a name="apidoc.module.guvnor.Local"></a>[module guvnor.Local](#apidoc.module.guvnor.Local)
-
-#### <a name="apidoc.element.guvnor.Local.connect"></a>[function <span class="apidocSignatureSpan">guvnor.Local.</span>connect ()](#apidoc.element.guvnor.Local.connect)
-- description and source-code
-```javascript
-connect = function () {
-  var args = Array.prototype.slice.call(arguments)
-
-  createContainer(function (container) {
-    findConfigAndLogger.call(null, container, args)
-
-    container.find('localDaemon').connect(args[args.length - 1])
-  })
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.guvnor.Local.connectOrStart"></a>[function <span class="apidocSignatureSpan">guvnor.Local.</span>connectOrStart ()](#apidoc.element.guvnor.Local.connectOrStart)
-- description and source-code
-```javascript
-connectOrStart = function () {
-  var args = Array.prototype.slice.call(arguments)
-
-  createContainer(function (container) {
-    findConfigAndLogger.call(null, container, args)
-
-    container.find('localDaemon').connectOrStart(args[args.length - 1])
-  })
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.guvnor.Local.running"></a>[function <span class="apidocSignatureSpan">guvnor.Local.</span>running ()](#apidoc.element.guvnor.Local.running)
-- description and source-code
-```javascript
-running = function () {
-  var args = Array.prototype.slice.call(arguments)
-
-  createContainer(function (container) {
-    findConfigAndLogger.call(null, container, args)
-
-    var callback = args[args.length - 1]
-
-    var connection = container.find('localDaemonUserConnection')
-    connection.connect({}, function (error) {
-      if (error && error.code === 'DAEMON_NOT_RUNNING') {
-        return process.nextTick(callback.bind(callback, false))
-      }
-
-      process.nextTick(callback.bind(callback, true))
-
-      connection.disconnect()
-    })
-  })
-}
-```
-- example usage
-```shell
-n/a
 ```
 
 
